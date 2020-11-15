@@ -1,9 +1,9 @@
 package vaultclient
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"strings"
-	"encoding/json"
 
 	"github.com/hashicorp/vault/api"
 	"github.com/mitchellh/go-homedir"
@@ -119,6 +119,15 @@ func (v Vault) ListSecretStruct(path string) (List, error) {
 
 	err = json.Unmarshal(s, &list)
 	return list, err
+}
+
+// WriteSecret writes a payload to the v1 secret engine at a given path
+// and returns an error
+func (v Vault) WriteSecret(payload []byte, path string) error {
+	if _, err := v.Client.Logical().WriteBytes(path, payload); err != nil {
+		return errors.Wrap(err, "failed to write secret at path '"+path+"'")
+	}
+	return nil
 }
 
 func readTokenFromFile() (string, error) {

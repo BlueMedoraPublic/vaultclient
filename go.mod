@@ -1,10 +1,14 @@
 module github.com/BlueMedoraPublic/vaultclient
 
-go 1.13
+go 1.15
 
 require (
-	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-	github.com/hashicorp/vault/api v1.0.4
+	// we need this commit https://github.com/hashicorp/vault/pull/7611
+	// therefore we import the entire vault package because the importing only
+	// api will result in too old of a version for some reason (thanks go mod..)
+	github.com/hashicorp/vault v1.6.0
+	github.com/hashicorp/vault/api v1.0.5-0.20201001211907-38d91b749c77
+	
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/pkg/errors v0.8.1
+	github.com/pkg/errors v0.9.1
 )
